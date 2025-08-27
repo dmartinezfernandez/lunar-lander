@@ -1,0 +1,50 @@
+/*
+
+IBM colors (https://www.ibm.com/design/language/):
+    13171a Cool Gray 100
+    b9bfc7 Cool Gray 30
+    dde1e6 Cool Gray 20
+
+*/
+
+html, input {
+    font-family: 'Noto Sans Mono', monospace;
+    background-color: #13171a /* Cool Gray 100 */;
+    color: #b9bfc7 /* Cool Gray 30 */;
+    border: none;
+}
+
+pre {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+body {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+h1 {
+    font-weight: 300;
+}
+
+input, button {
+    font-size: inherit;
+}
+
+*:focus {
+    outline: none;
+}
+
+button {
+    font-family: inherit;
+    border: 0;
+    padding: 0;
+    background-color: #b9bfc7;
+    color: #13171a;
+}
+
+button:focus {
+    background-color: #dde1e6;
+}
