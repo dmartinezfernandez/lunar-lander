@@ -124,7 +124,7 @@ modified **rocket equation** with gravity losses,
 $\Delta v = v(t) - v(0) = -\, u \ln\left(\frac{m_0 - k\, t}{m_0}\right) + g\, t$.
 
 ```math
-v(t) = v_0 + g\, t - u \ln\left(\frac{m_0 - k\, t}{m_0}\right),
+v(t) = v_0 + g\, t - u \ln\left(\frac{m_0 - k\, t}{m_0}\right), \qquad (1)
 ```
 
 where $v_0$ is the initial velocity $v(0)$.
@@ -132,7 +132,7 @@ where $v_0$ is the initial velocity $v(0)$.
 Since $\int v(t) dt = r(t) + C$, we obtain the position $r(t)$ (the altitude) as
 a primitive of $v(t)$,
 
-$`r(t) = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right]`$
+$`r(t) = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right]`$.
 
 Then, the variation of altitude from the initial time $0$ to the final time $t$
 is:
@@ -140,10 +140,13 @@ is:
 $`\Delta r = \int_{0}^{t}\,v(t)\, dt = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{u}{k}\, m_0`$
 
 ```math
-r(t) = r_0 + v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{u}{k}\, m_0,
+r(t) = r_0 + v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{u}{k}\, m_0, \qquad (2)
 ```
 
 where $r_0$ is the initial position $r(0)$.
+
+Formulas $1$ and $2$ will be used to compute the velocity and the
+altitude, respectively.
 
 ### Landing
 
@@ -161,10 +164,13 @@ simpler, as the motion then follows the equations of free fall.
 The altitude equation involves logarithmic terms, which prevent an exact
 analytical solution for the time at which the rocket reaches the lunar surface
 (whether it lands or crashes). Therefore, approximate methods must be used to
-estimate this time. One option is to simplify the logarithmic expressions using
-a Taylor series expansion and retain only the first few terms. However, a more
-robust and accurate approach is to apply numerical root-finding methods, such as
+estimate this time.
+
+One option is to simplify the logarithmic expressions using a Taylor series
+expansion and retain only the first few terms. However, a more robust and
+accurate approach is to apply numerical root-finding methods, such as
 the bisection method, the secant method, or Newton's method.
+
 Although the secant and Newton methods generally offer faster convergence, they
 require verification of convergence criteria and may involve the evaluation or
 estimation of derivatives, which introduces additional complexity.
@@ -320,7 +326,7 @@ SORRY,BUT THERE WERE NO SURVIVORS-YOU BLEW IT!
 IN FACT YOU BLASTED A NEW LUNAR CRATER 1113.55 FT. DEEP
 ```
 
-## Acknowledge
+## Bibliography
 
 - Jim Storer's Lunar Lander: [Lunar Landing Game Related Documents](https://www.cs.brandeis.edu/~storer/LunarLander/LunarLander.html)
 - Martin C. Martin: [How I Found A 55 Year Old Bug In The First Lunar Lander Game](https://martincmartin.com/2024/06/14/how-i-found-a-55-year-old-bug-in-the-first-lunar-lander-game/)
