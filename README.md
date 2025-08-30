@@ -65,12 +65,12 @@ mass of fuel that is burned, and that dependence is not linear.
 Let
 
 - $m_0$ be the mass of the rocket at the initial time $t = 0$, which includes
-the mass of the empty rocket $m_{dry}$ and the mass of the remaining unburned
-fuel,
+the mass of the rocket at burnout (final mass) $m_f$ and the mass of the
+remaining propellant,
 - $m$ be the mass of the rocket at a time $t$,
 - $m_p$ be the propulsion mass (the ejected gases),
 - $k = \frac{dm_p}{dt}$ be the burned fuel rate, assumed constant in the context
-of the problem.
+of the problem. Notice that $\frac{dm_p}{dt} > 0$, so $\frac{dm}{dt} = - \frac{dm_p}{dt} < 0$)
 
 Then, $`m(t) = m_0 - k\, t`$.
 
@@ -79,65 +79,106 @@ and exhaust velocity.
 
 Let
 
-- $v_{ex}$ be the **exhaust velocity**,
-- $F_{ex}$ be the **momentum thrust** force (the force applied to the rocket by
-the ejected burned exhaust gases).
+- $\boldsymbol{v_{ex}}$ be the **exhaust velocity**,
+- $\boldsymbol{F_{ex}}$ be the **momentum thrust** force (the force applied to the rocket by
+the ejected exhaust gases).
 
-Then, $`F_{ex} = k\, v_{ex}`$, which is constant over the time span $t$.
+Then, $`\boldsymbol{F_{ex}} = \dot{m} \, \boldsymbol{v_{ex}} = - k\, \boldsymbol{v_{ex}}`$, which is constant over the time span $t$.
+
+There exist other physical effects, such as gas pressure for jet engines or
+relativistic effects, which contribute to the thrust. These effects are taken
+into account by a corresponding additional thrust term $\boldsymbol{F_{+}}$, and
+thus obtaining the _total thrust_ of a reaction engine
+$`\boldsymbol{F_{*}} = \boldsymbol{F_{ex}} + \boldsymbol{F_{+}} = \dot{m} \, \boldsymbol{v_{*}}`$,
+and defining the _effective exhaust velocity_
+$`\boldsymbol{v_{*}} = \boldsymbol{v_{ex}} + \frac{\boldsymbol{F_{+}}}{\dot{m_p}}`$.
+
+Within the scope of the problem, I will limit my analysis to the simplifications
+given. Further details can be found in Walter (2024)<sup>[4](#walter)</sup>.
 
 Let
 
-- $F_G$ be the gravitational force,
-- $g$ be the acceleration of gravity, assumed constant in the context of the
-problem.
+- $\boldsymbol{F_G}$ be the gravitational force,
+- $\boldsymbol{g}$ be the acceleration of gravity, assumed constant in the
+context of the problem.
 
-Then, $`F_G(t) = m(t)\, g`$.
+Then, $`\boldsymbol{F_G}(t) = m(t)\, \boldsymbol{g}`$.
 
-The following figure defines the signs convention, where $g$ is negative:
+I define the vertical axis $\boldsymbol{j}$ so that the component of
+$`\boldsymbol{F_G} = m \, \boldsymbol{g}`$ is negative, while the component of
+$`\boldsymbol{F_{ex}} = - k \, \boldsymbol{v_{ex}}`$ is positive, as shown in
+the figure below.
 
 ```math
 \begin{aligned}
-\uparrow \; F_{ex} \\
+\uparrow \; \boldsymbol{F_{ex}} \\
 Rocket \\
-\downarrow \; F_{G}\; \\
+\downarrow \; \boldsymbol{F_{G}} \\
 \; \\
 Moon
 \end{aligned}
 ```
 
-Combining $F_{ex}$, $F_G$ and the Newton's second law, we obtain the acceleration
-as a function of $t$,
-
-$`F_{ex} + F_G = k\, v_{ex} + m(t)\, g = m(t)\, a(t)`$  
-$`k\, v_{ex} + (m_0 - k\, t)\, g = (m_0 - k\, t)\, a(t)`$  
-$`a(t) = \frac{k\, v_{ex} + (m_0 - k\, t)\, g}{m_0 - k\, t}`$
+When these non-inertial forces $\boldsymbol{F_{ex}}$ and $\boldsymbol{F_G}$ are
+taken into account, _Newton's second law of motion_ can be written as
+$m \, \boldsymbol{\dot{v}} = \boldsymbol{F_{ex}} + \boldsymbol{F_G}$.
+Substituting the expression for the thrust,
+$`\boldsymbol{F_{ex}} =\dot{m} \, \boldsymbol{v_{ex}}`$, we finally
+obtain the **equation of rocket motion**:
 
 ```math
-a(t) = \frac{k\, v_{ex}}{m_0 - k\, t} + g
+m\, \boldsymbol{\dot{v}} = \dot{m}\, \boldsymbol{v_{ex}} + \boldsymbol{F_G}
 ```
 
-Since $\int a(t) dt = v(t) + C$, we obtain the velocity $v(t)$ as a primitive of
-$a(t)$. For dimensional consistency, the argument of the logarithm must be
-dimensionless. This can be achieved by dividing $m_0 - k\, t$ by an arbitrary
-reference mass $m_{ref}$, which is then absorbed into the integration constant.
-
-$`v(t) = - v_{ex} \ln\left(\frac{m_0 - k\, t}{m_{ref}}\right) + g\, t`$
-
-Integrating from the initial time $0$ to the final time $t$, we obtain an
-intermediate expression that still involves the reference mass,
-
-$`\Delta v = \int_{0}^{t}\,a(t)\, dt = - v_{ex} \ln\left(\frac{m_0 - k\, t}{m_{ref}}\right) + g\, t + v_{ex} \ln\left(\frac{m_0}{m_{ref}}\right)`$.
-
-By setting $m_{ref} = m_0$, the expression for $\Delta v$ simplifies into the
-modified **rocket equation** with gravity losses,
-
-$\Delta v = v(t) - v(0) = -\, v_{ex} \ln\left(\frac{m_0 - k\, t}{m_0}\right) + g\, t$.
+In the terms of the problem, $`m(t)\, a(t) = k \, v_{ex} - m(t)\, g`$, where
+$g = |\boldsymbol{g}|$ and $v_{ex} = |\boldsymbol{v_{ex}}|$. Substituting
+$m(t)$, we obtain  $`(m_0 - k\, t)\, a(t) = k\, v_{ex} - (m_0 - k\, t)\, g`$.
+Then we find the acceleration as a function of $t$:
 
 ```math
-v(t) = v_0 + g\, t - v_{ex} \ln\left(\frac{m_0 - k\, t}{m_0}\right), \qquad (1)
+a(t) = \frac{k\, v_{ex}}{m_0 - k\, t} - g
+```
+
+Next, the velocity can be obtained by a single integration and the position by
+a double integration.
+
+The _delta-v budget_ $\Delta{v(t)} = \int_{v_0}^{v} dv = v(t) - v_0$ will turn
+out to be quite handy to describe spacecraft maneuvers in space. It describes
+the total change of the rocket's velocity due to all forces acting on the
+spacecraft over the time $t$.
+
+From the equation of rocket motion, we get
+$`d\boldsymbol{v} = \frac{\boldsymbol{F_{ex}} + \boldsymbol{F_G}}{m} dt`$.
+Substituting $\boldsymbol{F_{ex}} \, dt = \boldsymbol{v_{ex}} \, dm$, results
+$`d\boldsymbol{v} = \frac{\boldsymbol{v_{ex}}}{m} dm + \frac{\boldsymbol{F_G}}{m} dt`$.
+Then, the velocity change can be calculated by explicit integration:
+
+$`\Delta{\boldsymbol{v}}(t) = \int_{0}^{t}\frac{\boldsymbol{F_{ex}} + \boldsymbol{F_G}}{m} dt'
+= \int_{m_0}^{m} \frac{\boldsymbol{v_{ex}}}{m} dm + \int_{0}^{t} \frac{\boldsymbol{F_G}}{m} dt' `$
+
+In the context of the problem, $\boldsymbol{v_{ex}}$ and $\boldsymbol{g}$ are
+constants, so the velocity change simplifies into the modified
+**rocket equation** with gravity losses:
+
+$`\Delta{\boldsymbol{v}}(t) = \boldsymbol{v_{ex}} \ln\left(\frac{m}{m_0}\right) + \boldsymbol{g}\, t,`$
+
+or in terms of vector magnitudes, keeping in mind that $`\Delta v`$ is always
+strictly antiparallel to $\boldsymbol{v_{ex}}$,
+
+```math
+\Delta{v}(t) = v_{ex} \ln\left(\frac{m_0}{m} \right) - g \, t.
+```
+
+In the context of the problem, results:
+
+```math
+v(t) = v_0 - g\, t + v_{ex} \ln\left(\frac{m_0}{m_0 - k\, t}\right), \qquad (1)
 ```
 
 where $v_0$ is the initial velocity $v(0)$.
+
+TODO ...
+
 
 Since $\int v(t) dt = r(t) + C$, we obtain the position $r(t)$ (the altitude) as
 a primitive of $v(t)$,
