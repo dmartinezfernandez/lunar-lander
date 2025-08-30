@@ -2,7 +2,7 @@
 
 Go to [Lunar Lander](https://dmartinezfernandez.github.io/lunar-lander) in dmartinezfernandez's GitHub Pages.
 
-## The Problem
+## The Problem<sup>[1](#storer)</sup>
 
 You’re 120 miles above the surface of the moon, and your automated landing
 system has failed! You’re now in freefall and must take manual control to land
@@ -35,7 +35,7 @@ Landing criteria (velocity in MPH):
 
 ## Analysis
 
-### Descent and landing cases
+### Descent and landing cases<sup>[2](#martin)</sup>
 
 - Powered/ballistic flight: The module burns fuel properly (or reserves), slows down, and lands
 gently.
@@ -65,11 +65,12 @@ mass of fuel that is burned, and that dependence is not linear.
 Let
 
 - $m_0$ be the mass of the rocket at the initial time $t = 0$, which includes
-the mass of the empty rocket $m_{dry}$ and the mass of the remaining unburned fuel,
+the mass of the empty rocket $m_{dry}$ and the mass of the remaining unburned
+fuel,
 - $m$ be the mass of the rocket at a time $t$,
-- $m_g$ be the mass of ejected gases,
-- $k = \frac{dm_g}{dt}$ be the burned fuel rate, which is constant over the time
-span $t$.
+- $m_p$ be the propulsion mass (the ejected gases),
+- $k = \frac{dm_p}{dt}$ be the burned fuel rate, assumed constant in the context
+of the problem.
 
 Then, $`m(t) = m_0 - k\, t`$.
 
@@ -78,32 +79,41 @@ and exhaust velocity.
 
 Let
 
-- $u$ be the the exhaust gas velocity,
-- $F_T$ be the thrust (the force applied to the rocket by the ejected burned
-exhaust gases).
+- $v_{ex}$ be the **exhaust velocity**,
+- $F_{ex}$ be the **momentum thrust** force (the force applied to the rocket by
+the ejected burned exhaust gases).
 
-Then, $`F_T = k\, u`$, which is constant over the time span $t$.
+Then, $`F_{ex} = k\, v_{ex}`$, which is constant over the time span $t$.
 
 Let
 
 - $F_G$ be the gravitational force,
-- $g$ be the acceleration of gravity, assumed constant.
+- $g$ be the acceleration of gravity, assumed constant in the context of the
+problem.
 
 Then, $`F_G(t) = m(t)\, g`$.
 
 The following figure defines the signs convention, where $g$ is negative:
 
-![forces](forces.png)
+```math
+\begin{aligned}
+\uparrow \; F_{ex} \\
+Rocket \\
+\downarrow \; F_{G}\; \\
+\; \\
+Moon
+\end{aligned}
+```
 
-Combining $F_T$, $F_G$ and the Newton's second law, we obtain the acceleration
+Combining $F_{ex}$, $F_G$ and the Newton's second law, we obtain the acceleration
 as a function of $t$,
 
-$`F_T + F_G = k\, u + m(t)\, g = m(t)\, a(t)`$  
-$`k\, u + (m_0 - k\, t)\, g = (m_0 - k\, t)\, a(t)`$  
-$`a(t) = \frac{k\, u + (m_0 - k\, t)\, g}{m_0 - k\, t}`$
+$`F_{ex} + F_G = k\, v_{ex} + m(t)\, g = m(t)\, a(t)`$  
+$`k\, v_{ex} + (m_0 - k\, t)\, g = (m_0 - k\, t)\, a(t)`$  
+$`a(t) = \frac{k\, v_{ex} + (m_0 - k\, t)\, g}{m_0 - k\, t}`$
 
 ```math
-a(t) = \frac{k\, u}{m_0 - k\, t} + g
+a(t) = \frac{k\, v_{ex}}{m_0 - k\, t} + g
 ```
 
 Since $\int a(t) dt = v(t) + C$, we obtain the velocity $v(t)$ as a primitive of
@@ -111,20 +121,20 @@ $a(t)$. For dimensional consistency, the argument of the logarithm must be
 dimensionless. This can be achieved by dividing $m_0 - k\, t$ by an arbitrary
 reference mass $m_{ref}$, which is then absorbed into the integration constant.
 
-$`v(t) = - u \ln\left(\frac{m_0 - k\, t}{m_{ref}}\right) + g\, t`$
+$`v(t) = - v_{ex} \ln\left(\frac{m_0 - k\, t}{m_{ref}}\right) + g\, t`$
 
 Integrating from the initial time $0$ to the final time $t$, we obtain an
 intermediate expression that still involves the reference mass,
 
-$`\Delta v = \int_{0}^{t}\,a(t)\, dt = - u \ln\left(\frac{m_0 - k\, t}{m_{ref}}\right) + g\, t + u \ln\left(\frac{m_0}{m_{ref}}\right)`$.
+$`\Delta v = \int_{0}^{t}\,a(t)\, dt = - v_{ex} \ln\left(\frac{m_0 - k\, t}{m_{ref}}\right) + g\, t + v_{ex} \ln\left(\frac{m_0}{m_{ref}}\right)`$.
 
 By setting $m_{ref} = m_0$, the expression for $\Delta v$ simplifies into the
 modified **rocket equation** with gravity losses,
 
-$\Delta v = v(t) - v(0) = -\, u \ln\left(\frac{m_0 - k\, t}{m_0}\right) + g\, t$.
+$\Delta v = v(t) - v(0) = -\, v_{ex} \ln\left(\frac{m_0 - k\, t}{m_0}\right) + g\, t$.
 
 ```math
-v(t) = v_0 + g\, t - u \ln\left(\frac{m_0 - k\, t}{m_0}\right), \qquad (1)
+v(t) = v_0 + g\, t - v_{ex} \ln\left(\frac{m_0 - k\, t}{m_0}\right), \qquad (1)
 ```
 
 where $v_0$ is the initial velocity $v(0)$.
@@ -132,15 +142,15 @@ where $v_0$ is the initial velocity $v(0)$.
 Since $\int v(t) dt = r(t) + C$, we obtain the position $r(t)$ (the altitude) as
 a primitive of $v(t)$,
 
-$`r(t) = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right]`$.
+$`r(t) = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{v_{ex}}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right]`$.
 
 Then, the variation of altitude from the initial time $0$ to the final time $t$
 is:
 
-$`\Delta r = \int_{0}^{t}\,v(t)\, dt = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{u}{k}\, m_0`$
+$`\Delta r = \int_{0}^{t}\,v(t)\, dt = v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{v_{ex}}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{v_{ex}}{k}\, m_0`$
 
 ```math
-r(t) = r_0 + v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{u}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{u}{k}\, m_0, \qquad (2)
+r(t) = r_0 + v_0\, t + \frac{1}{2}\, g\, t^2 + \frac{v_{ex}}{k}\, (m_0 - k\, t)\, \left[\ln\left(\frac{m_0 - k\, t}{m_0}\right) - 1 \right] + \frac{v_{ex}}{k}\, m_0, \qquad (2)
 ```
 
 where $r_0$ is the initial position $r(0)$.
@@ -168,8 +178,9 @@ estimate this time.
 
 One option is to simplify the logarithmic expressions using a Taylor series
 expansion and retain only the first few terms. However, a more robust and
-accurate approach is to apply numerical root-finding methods, such as
-the bisection method, the secant method, or Newton's method.
+accurate approach is to apply numerical root-finding
+methods<sup>[5](#cheney-kincaid)</sup>, such as the bisection method, the secant
+method, or Newton's method.
 
 Although the secant and Newton methods generally offer faster convergence, they
 require verification of convergence criteria and may involve the evaluation or
@@ -223,8 +234,8 @@ Descent procedure:
     1. If propellant runs out during the iteration, adjust 't'.
     1. If a temporary ascent occurs, check whether the lowest point is below the
     surface, and adjust 't'.
-    1. If altitude is below the surface or zero, adjust 't' and set the iteration
-    state to 'landed'.
+    1. If altitude is below the surface or zero, adjust 't' and set the
+    iteration state to 'landed'.
     1. Update the lander properties and return the final iteration state.
     1. Display the current state as a line.
 1. Display the result of the landing (soft or hard).
@@ -326,10 +337,12 @@ SORRY,BUT THERE WERE NO SURVIVORS-YOU BLEW IT!
 IN FACT YOU BLASTED A NEW LUNAR CRATER 1113.55 FT. DEEP
 ```
 
-## Bibliography
+## References
 
-- Jim Storer's Lunar Lander: [Lunar Landing Game Related Documents](https://www.cs.brandeis.edu/~storer/LunarLander/LunarLander.html)
-- Martin C. Martin: [How I Found A 55 Year Old Bug In The First Lunar Lander Game](https://martincmartin.com/2024/06/14/how-i-found-a-55-year-old-bug-in-the-first-lunar-lander-game/)
-- OpenStax. [9.7 Rocket Propulsion. University Physics Volume 1](https://pressbooks.online.ucf.edu/osuniversityphysics/chapter/9-7-rocket-propulsion/)
-- Cheney, E. W., & Kincaid, D. (2008). _Numerical Mathematics and Computing_ (Sixth Etition)
-- Walter, U. (2024). [_Astronautics: The Physics of Space flight_ (Fourth Edition)](https://link.springer.com/book/10.1007/978-3-031-15992-3)
+1. <a id="storer"></a> Jim Storer's Lunar Lander:
+[Lunar Landing Game Related Documents](https://www.cs.brandeis.edu/~storer/LunarLander/LunarLander.html)
+1. <a id="martin"></a> Martin C. Martin:
+[How I Found A 55 Year Old Bug In The First Lunar Lander Game](https://martincmartin.com/2024/06/14/how-i-found-a-55-year-old-bug-in-the-first-lunar-lander-game/)
+1. OpenStax. [9.7 Rocket Propulsion. University Physics Volume 1](https://pressbooks.online.ucf.edu/osuniversityphysics/chapter/9-7-rocket-propulsion/)
+1. <a id="walter"></a> Walter, U. (2024). [_Astronautics: The Physics of Space flight_ (Fourth Edition)](https://link.springer.com/book/10.1007/978-3-031-15992-3)
+1. <a id="cheney-kincaid"></a> Cheney, E. W., & Kincaid, D. (2008). _Numerical Mathematics and Computing_ (Sixth Etition)
